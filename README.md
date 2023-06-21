@@ -1,9 +1,5 @@
 # 				第11组 决赛文档 Cyberdog Document
 
-
-
-[toc]
-
 ## Ⅰ 解决方案 Task Solution
 
 ### 思路
@@ -19,14 +15,16 @@ $$
 - 不带回报的马尔科夫决策过程
 
   不带回报的马尔科夫决策过程由三元组表示
-  $$
-  (\bold{S}, \bold{A}, \bold{P}_\pi) \\
-  \bold{S}=\{ s_1=寻球过程, s_2=避障过程, s_3=空间自旋转过程,s_4=球已找到状态,s_5=其他状态 \} \\
-  \bold{A}=\{a_1=旋转，a_2=前进，a_3=趴下, a_4=起立, a_5=其他行动\} \\
-  \bold{P}_\pi\xleftrightarrow{\text{Define By}} \pi
-  $$
+  
+$$ (S,  A,  P_\pi) $$
 
-- 随机数决策：空间自旋转过程 $\bold{C}$
+$$ {S}=\{ s_1=寻球过程, s_2=避障过程, s_3=空间自旋转过程,s_4=球已找到状态,s_5=其他状态 \} $$
+
+$$ {A}=\{a_1=旋转，a_2=前进，a_3=趴下, a_4=起立, a_5=其他行动\} $$
+
+$$ {P}_\pi\xleftrightarrow{\text{Define By}} \pi$$
+
+随机数决策：空间自旋转过程 $C$
 
 $$
 P(\text{Anti-Clockwise Rotate}\ |\ S_t=s_3) = 0.5 \\
@@ -35,17 +33,20 @@ $$
 
 - 线性空间、不变子空间、线性映射
 
-状态空间总可以表示为线性空间，因为环境是二维带障碍的有解空间，基向量选为正交的为 $\vec{x}$ 和 $\vec{y}$。设解空间为 $\bold{Y}$，则易知解空间是状态空间的子集，即$\bold{Y} \subseteq \bold{U}$。游戏的目标是通过特定的$\bold{P}_{\pi}$，采取特定的$a_t\in\bold{A}$，达到特定的$s_t \in \bold{S}$。最终达到解状态。
+状态空间总可以表示为线性空间，因为环境是二维带障碍的有解空间，基向量选为正交的为 $\vec{x}$ 和 $\vec{y}$。设解空间为 $Y$，则易知解空间是状态空间的子集，即 $Y\subseteq {U}$。游戏的目标是通过特定的 $P_{\pi}$，采取特定的 $a_t\in A$，达到特定的 $s_t \in S$。最终达到解状态。
+
 $$
 p^a(s^\prime) = \pi(a|s)p(s)
 $$
-设不变子空间为 $\bold{S}_{sub}$，$\bold{S}_{sub}\subset \bold{S}$，$\bold{S}_{sub}\cap \bold{Y}=\bold{\varnothing} $狗在一定行动下可能会陷入不变子空间，而无法达到解空间，因而设置了空间自旋转过程，用于跳出不变子空间。
+
+设不变子空间为 $S_{sub}$，同时 $S_{sub}\subset S$，以及 $S_{sub}\cap  Y= \varnothing$ 狗在一定行动下可能会陷入不变子空间，而无法达到解空间，因而设置了空间自旋转过程，用于跳出不变子空间。
+
 $$
-\bold{S}^\prime \subseteq \bold{S}_{sub},\ \bold{S}^\prime是狗在没有空间自旋转过程的下一个状态所能达到的空间
+ {S}^\prime \subseteq  {S}_{sub},\  {S}^\prime是狗在没有空间自旋转过程的下一个状态所能达到的空间
 $$
 
 $$
-\bold{S}^\prime \xrightarrow{\bold{C}}\bold{S}-\bold S_{sub}
+{S}^\prime \xrightarrow{ {C}} {S}-  S_{sub}
 $$
 
 ### 策略 
