@@ -61,15 +61,25 @@ $$
 ### 2.主体控制阶段
 
 机器狗在每帧调用`rgb_info()`使用摄像头获取图像信息，进行颜色识别与圆形筛选，判断视野中是否存在球。
+
 &emsp;**若视野中存在球**，调用`depth_info()`获取深度信息，判断球的距离是否小于要求的范围。
+
 &emsp;&emsp;-如果球的距离足够近，则执行坐下动作，机器狗进入结束阶段。
+
 &emsp;&emsp;-如果球的距离不够近，则机器狗进入寻球模式。
+
 &emsp;&emsp;&emsp;--在寻球模式中，使用 PID 控制器持续进行球的追踪，根据球的位置信息调整机器狗的线/角速度实现跟随动作，直到球足够近或前方出现障碍物时，跳出寻球模式。
+
 &emsp;**若视野中不存在球**，则接下来调用`depth_info_box`判断视野中是否存在障碍物。
+
 &emsp;&emsp;**若视野中存在障碍物**，则进入避障逻辑：
+
 &emsp;&emsp;&emsp;-如果之前已经看到球，则执行平移避障动作。
+
 &emsp;&emsp;&emsp;-如果还未看到球：当障碍物距离过近（深度信息低于阈值）时，执行后退避障动作；否则，执行旋转避障动作。
+
 &emsp;&emsp;**若视野中不存在球和障碍物**，则机器狗执行前进动作。
+
 &emsp;&emsp;&emsp;--如果前进过久而没有发现球或障碍物，机器狗将进行120度旋转，尝试寻找球并避免进入死循环。
 
 ### 3.结束阶段
@@ -178,7 +188,10 @@ result = cv2.bitwise_and(frame, frame, mask=mask)
 
 这部分代码首先将获取的图像转换为HSV颜色空间，然后定义了经过试验确定的蓝色目标颜色范围。
 
-<img src="README/image-20230509112357427.png" alt="image-20230509112357427" style="zoom:100%;" align="left" />
+<div align="center">
+    <img src="imgs/fig4.png" alt="image-20230509112357427" style="zoom:100%;" />
+</div>
+
 
 之后使用`cv2.inRange()`函数根据颜色范围创建掩膜（mask1），将目标颜色的像素设为255，其余像素设为0。
 
@@ -231,7 +244,9 @@ if max_area != 0:
 
 在此部分代码中，使用for循环遍历每个检测到的轮廓。cnt表示第i个色块的轮廓信息。然后使用`cv2.minEnclosingCircle()`函数计算出包围该轮廓的最小外接圆，获取圆心坐标(x, y)和半径radius。center变量保存下了圆心的整数坐标。半径radius信息在复赛中未用到，在后续比赛中可以加以应用。接下来，输出每个中心点的坐标，以便进行调试和分析。然后重新计算掩膜和结果图像，以便在下一次循环时使用。
 
-<img src="README/984f21d736deb09778a4aa5bbce22f1.jpg" alt="984f21d736deb09778a4aa5bbce22f1" style="zoom: 19%;" />
+<div align="center">
+    <img src="imgs/fig1.jpg" alt="image-20230509112357427" style="zoom:100%;" />
+</div>
 
 然后，使用条件语句判断圆心坐标是否位于非安全区内，安全区的划分如上图所示。如果满足条件，`return True`。
 
@@ -316,7 +331,9 @@ def follow_ball(self):
 
 通过枚举各种可能的测例进行测试，已经测试过的测例包括但不限于：
 
-<img src="README/f2bee5ab166e03c16956e97e3f8e4ea.jpg" alt="f2bee5ab166e03c16956e97e3f8e4ea" style="zoom: 25%;" />
+<div align="center">
+    <img src="imgs/fig3.jpg" alt="image-20230509112357427" style="zoom:100%;" />
+</div>
 
 ### 改进思路
 
